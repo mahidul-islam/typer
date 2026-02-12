@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1033466122569",
+    "project_id": "bangla-typer",
+    "storage_bucket": "bangla-typer.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1033466122569:android:cb0cf7635924f0c9f04a98",
+        "android_client_info": {
+          "package_name": "com.arrijal.typer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQNOVl-EtFZvDHzMxDKdDbC8D6jusMcd0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
