@@ -17,13 +17,13 @@ class PracticeView extends GetView<PracticeController> {
         backgroundColor: const Color(0xFF1a1a2e),
         appBar: AppBar(
           backgroundColor: const Color(0xFF16213e),
-          title: Obx(() => Text(
-                controller.lesson.title,
-                style: const TextStyle(
-                  fontFamily: 'Courier New',
-                  color: Color(0xFFeeeeee),
-                ),
-              )),
+          title: Text(
+            controller.lesson.title,
+            style: const TextStyle(
+              fontFamily: 'Courier New',
+              color: Color(0xFFeeeeee),
+            ),
+          ),
           iconTheme: const IconThemeData(color: Color(0xFF00adb5)),
         ),
         body: Column(
@@ -35,46 +35,65 @@ class PracticeView extends GetView<PracticeController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Obx(() => _buildStat('WPM', controller.wpm.toStringAsFixed(0))),
-                  Obx(() => _buildStat('Accuracy', '${controller.accuracy.toStringAsFixed(1)}%')),
-                  Obx(() => _buildStat('Errors', controller.errors.value.toString())),
-                  Obx(() => _buildStat('Time', '${controller.elapsedTime.value}s')),
+                  Obx(
+                    () => _buildStat('WPM', controller.wpm.toStringAsFixed(0)),
+                  ),
+                  Obx(
+                    () => _buildStat(
+                      'Accuracy',
+                      '${controller.accuracy.toStringAsFixed(1)}%',
+                    ),
+                  ),
+                  Obx(
+                    () => _buildStat(
+                      'Errors',
+                      controller.errors.value.toString(),
+                    ),
+                  ),
+                  Obx(
+                    () =>
+                        _buildStat('Time', '${controller.elapsedTime.value}s'),
+                  ),
                 ],
               ),
             ),
-            
+
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
                 child: Column(
                   children: [
                     // Lesson description
-                    Obx(() => Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF16213e),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            controller.lesson.description,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF9ba4b4),
-                              fontFamily: 'Courier New',
-                            ),
-                          ),
-                        )),
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF16213e),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        controller.lesson.description,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Color(0xFF9ba4b4),
+                          fontFamily: 'Courier New',
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 24),
-                    
+
                     // Text display
                     Obx(() => _buildTextDisplay()),
-                    
+
                     const SizedBox(height: 32),
-                    
+
                     // Keyboard
                     Obx(() {
-                      final nextChar = controller.currentCharIndex.value < controller.lesson.content.length
-                          ? controller.lesson.content[controller.currentCharIndex.value]
+                      final nextChar =
+                          controller.currentCharIndex.value <
+                              controller.lesson.content.length
+                          ? controller.lesson.content[controller
+                                .currentCharIndex
+                                .value]
                           : '';
                       return KeyboardWidget(
                         highlightKeys: controller.lesson.keys.toSet(),
@@ -90,7 +109,7 @@ class PracticeView extends GetView<PracticeController> {
       ),
     );
   }
-  
+
   Widget _buildStat(String label, String value) {
     return Column(
       children: [
@@ -115,12 +134,12 @@ class PracticeView extends GetView<PracticeController> {
       ],
     );
   }
-  
+
   Widget _buildTextDisplay() {
     final content = controller.lesson.content;
     final currentIndex = controller.currentCharIndex.value;
     final typed = controller.typedText.value;
-    
+
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -136,7 +155,7 @@ class PracticeView extends GetView<PracticeController> {
           final char = content[index];
           Color color;
           Color? backgroundColor;
-          
+
           if (index < currentIndex) {
             // Already typed
             if (index < typed.length && typed[index] == char) {
@@ -153,7 +172,7 @@ class PracticeView extends GetView<PracticeController> {
             // Not yet typed
             color = const Color(0xFF6b7280);
           }
-          
+
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 2),
             color: backgroundColor,
@@ -163,7 +182,9 @@ class PracticeView extends GetView<PracticeController> {
                 fontSize: 24,
                 fontFamily: 'Courier New',
                 color: color,
-                fontWeight: index == currentIndex ? FontWeight.bold : FontWeight.normal,
+                fontWeight: index == currentIndex
+                    ? FontWeight.bold
+                    : FontWeight.normal,
               ),
             ),
           );

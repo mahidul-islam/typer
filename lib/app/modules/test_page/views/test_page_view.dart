@@ -16,13 +16,13 @@ class TestPageView extends GetView<TestPageController> {
         backgroundColor: const Color(0xFF1a1a2e),
         appBar: AppBar(
           backgroundColor: const Color(0xFF16213e),
-          title: Obx(() => Text(
-                controller.test.title,
-                style: const TextStyle(
-                  fontFamily: 'Courier New',
-                  color: Color(0xFFeeeeee),
-                ),
-              )),
+          title: Text(
+            controller.test.title,
+            style: const TextStyle(
+              fontFamily: 'Courier New',
+              color: Color(0xFFeeeeee),
+            ),
+          ),
           iconTheme: const IconThemeData(color: Color(0xFF00adb5)),
         ),
         body: Column(
@@ -34,12 +34,27 @@ class TestPageView extends GetView<TestPageController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Obx(() => _buildStat('WPM', controller.wpm.toStringAsFixed(0))),
-                  Obx(() => _buildStat('Accuracy', '${controller.accuracy.toStringAsFixed(1)}%')),
-                  Obx(() => _buildStat('Errors', controller.errors.value.toString())),
+                  Obx(
+                    () => _buildStat('WPM', controller.wpm.toStringAsFixed(0)),
+                  ),
+                  Obx(
+                    () => _buildStat(
+                      'Accuracy',
+                      '${controller.accuracy.toStringAsFixed(1)}%',
+                    ),
+                  ),
+                  Obx(
+                    () => _buildStat(
+                      'Errors',
+                      controller.errors.value.toString(),
+                    ),
+                  ),
                   Obx(() {
                     if (controller.test.duration == 0) {
-                      return _buildStat('Time', '${controller.elapsedTime.value}s');
+                      return _buildStat(
+                        'Time',
+                        '${controller.elapsedTime.value}s',
+                      );
                     } else {
                       return _buildStat('Time', '${controller.remainingTime}s');
                     }
@@ -47,7 +62,7 @@ class TestPageView extends GetView<TestPageController> {
                 ],
               ),
             ),
-            
+
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
@@ -55,9 +70,9 @@ class TestPageView extends GetView<TestPageController> {
                   children: [
                     // Text display
                     Obx(() => _buildTextDisplay()),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // Instructions
                     Container(
                       padding: const EdgeInsets.all(16),
@@ -86,7 +101,7 @@ class TestPageView extends GetView<TestPageController> {
       ),
     );
   }
-  
+
   Widget _buildStat(String label, String value) {
     return Column(
       children: [
@@ -111,12 +126,12 @@ class TestPageView extends GetView<TestPageController> {
       ],
     );
   }
-  
+
   Widget _buildTextDisplay() {
     final content = controller.test.content;
     final currentIndex = controller.currentCharIndex.value;
     final typed = controller.typedText.value;
-    
+
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -132,7 +147,7 @@ class TestPageView extends GetView<TestPageController> {
           final char = content[index];
           Color color;
           Color? backgroundColor;
-          
+
           if (index < currentIndex) {
             // Already typed
             if (index < typed.length && typed[index] == char) {
@@ -149,7 +164,7 @@ class TestPageView extends GetView<TestPageController> {
             // Not yet typed
             color = const Color(0xFF6b7280);
           }
-          
+
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 2),
             color: backgroundColor,
@@ -159,7 +174,9 @@ class TestPageView extends GetView<TestPageController> {
                 fontSize: 24,
                 fontFamily: 'Courier New',
                 color: color,
-                fontWeight: index == currentIndex ? FontWeight.bold : FontWeight.normal,
+                fontWeight: index == currentIndex
+                    ? FontWeight.bold
+                    : FontWeight.normal,
               ),
             ),
           );
