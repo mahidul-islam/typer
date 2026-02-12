@@ -8,29 +8,31 @@ import '../../../data/lessons/lesson_data.dart';
 class PracticeController extends GetxController {
   late Lesson lesson;
   late LessonCategory category;
-  
+
   final typedText = ''.obs;
   final currentCharIndex = 0.obs;
   final errors = 0.obs;
   final startTime = Rxn<DateTime>();
   final elapsedTime = 0.obs;
   final isCompleted = false.obs;
-  
+
   Timer? _timer;
-  
+
   double get wpm {
     if (elapsedTime.value == 0) return 0;
     final minutes = elapsedTime.value / 60;
     final words = typedText.value.split(' ').length;
     return (words / minutes).roundToDouble();
   }
-  
+
   double get accuracy {
     if (currentCharIndex.value == 0) return 100;
-    return ((currentCharIndex.value - errors.value) / currentCharIndex.value * 100)
+    return ((currentCharIndex.value - errors.value) /
+            currentCharIndex.value *
+            100)
         .clamp(0, 100);
   }
-  
+
   @override
   void onInit() {
     super.onInit();
@@ -38,65 +40,70 @@ class PracticeController extends GetxController {
     lesson = args['lesson'];
     category = args['category'];
   }
-  
+
   @override
   void onClose() {
     _timer?.cancel();
     super.onClose();
   }
-  
+
   void startTimer() {
     if (startTime.value == null) {
       startTime.value = DateTime.now();
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        elapsedTime.value = DateTime.now().difference(startTime.value!).inSeconds;
+        elapsedTime.value = DateTime.now()
+            .difference(startTime.value!)
+            .inSeconds;
       });
     }
   }
-  
+
   void handleKeyPress(RawKeyEvent event) {
     if (event is! RawKeyDownEvent) return;
     if (isCompleted.value) return;
-    
+
     startTimer();
-    
+
     if (event.logicalKey == LogicalKeyboardKey.backspace) {
       if (typedText.value.isNotEmpty) {
-        typedText.value = typedText.value.substring(0, typedText.value.length - 1);
+        typedText.value = typedText.value.substring(
+          0,
+          typedText.value.length - 1,
+        );
         if (currentCharIndex.value > 0) {
           currentCharIndex.value--;
         }
       }
       return;
     }
-    
+
     final char = event.character;
     if (char == null || char.isEmpty) return;
-    
+
     typedText.value += char;
-    
+
     if (currentCharIndex.value < lesson.content.length) {
       if (char != lesson.content[currentCharIndex.value]) {
         errors.value++;
       }
       currentCharIndex.value++;
-      
+
       if (currentCharIndex.value >= lesson.content.length) {
         completeLesson();
       }
     }
   }
-  
+
   void completeLesson() {
     isCompleted.value = true;
     _timer?.cancel();
-    
+
     // Show completion dialog
     Future.delayed(const Duration(milliseconds: 500), () {
       _showCompletionDialog();
     });
   }
-  
+
   void _showCompletionDialog() {
     Get.dialog(
       Dialog(
@@ -113,7 +120,7 @@ class PracticeController extends GetxController {
               ),
               const SizedBox(height: 24),
               const Text(
-                'Lesson Complete!',
+                'পাঠ সম্পন্ন!',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -122,10 +129,10 @@ class PracticeController extends GetxController {
                 ),
               ),
               const SizedBox(height: 24),
-              _buildStat('WPM', wpm.toStringAsFixed(0)),
-              _buildStat('Accuracy', '${accuracy.toStringAsFixed(1)}%'),
-              _buildStat('Errors', errors.value.toString()),
-              _buildStat('Time', '${elapsedTime.value}s'),
+              _buildStat('শব্দ/মিনিট', wpm.toStringAsFixed(0)),
+              _buildStat('নির্ভুলতা', '${accuracy.toStringAsFixed(1)}%'),
+              _buildStat('ভুল', errors.value.toString()),
+              _buildStat('সময়', '${elapsedTime.value}সে'),
               const SizedBox(height: 32),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -144,7 +151,7 @@ class PracticeController extends GetxController {
                       resetLesson();
                     },
                     child: const Text(
-                      'Retry',
+                      'পুনরায় চেষ্টা',
                       style: TextStyle(
                         fontFamily: 'Courier New',
                         color: Color(0xFFeeeeee),
@@ -164,7 +171,7 @@ class PracticeController extends GetxController {
                       goToNextLesson();
                     },
                     child: const Text(
-                      'Next Lesson',
+                      'পরবর্তী পাঠ',
                       style: TextStyle(
                         fontFamily: 'Courier New',
                         color: Color(0xFF1a1a2e),
@@ -180,7 +187,7 @@ class PracticeController extends GetxController {
       barrierDismissible: false,
     );
   }
-  
+
   Widget _buildStat(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -208,7 +215,7 @@ class PracticeController extends GetxController {
       ),
     );
   }
-  
+
   void resetLesson() {
     typedText.value = '';
     currentCharIndex.value = 0;
@@ -218,16 +225,16 @@ class PracticeController extends GetxController {
     isCompleted.value = false;
     _timer?.cancel();
   }
-  
+
   void goToNextLesson() {
     final currentLessonIndex = category.lessons.indexOf(lesson);
     if (currentLessonIndex < category.lessons.length - 1) {
       // Go to next lesson in the same category
       final nextLesson = category.lessons[currentLessonIndex + 1];
-      Get.off(() => Get.currentRoute, arguments: {
-        'lesson': nextLesson,
-        'category': category,
-      });
+      Get.off(
+        () => Get.currentRoute,
+        arguments: {'lesson': nextLesson, 'category': category},
+      );
       lesson = nextLesson;
       resetLesson();
     } else {
@@ -236,10 +243,10 @@ class PracticeController extends GetxController {
       if (categoryIndex < allLessonCategories.length - 1) {
         final nextCategory = allLessonCategories[categoryIndex + 1];
         final nextLesson = nextCategory.lessons.first;
-        Get.off(() => Get.currentRoute, arguments: {
-          'lesson': nextLesson,
-          'category': nextCategory,
-        });
+        Get.off(
+          () => Get.currentRoute,
+          arguments: {'lesson': nextLesson, 'category': nextCategory},
+        );
         lesson = nextLesson;
         category = nextCategory;
         resetLesson();

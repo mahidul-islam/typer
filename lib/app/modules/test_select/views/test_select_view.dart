@@ -12,11 +12,8 @@ class TestSelectView extends GetView<TestSelectController> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF16213e),
         title: const Text(
-          'Select a Test',
-          style: TextStyle(
-            fontFamily: 'Courier New',
-            color: Color(0xFFeeeeee),
-          ),
+          'একটি পরীক্ষা নির্বাচন করুন',
+          style: TextStyle(fontFamily: 'Courier New', color: Color(0xFFeeeeee)),
         ),
         iconTheme: const IconThemeData(color: Color(0xFF00adb5)),
       ),
@@ -71,8 +68,8 @@ class TestSelectView extends GetView<TestSelectController> {
                           const SizedBox(height: 8),
                           Text(
                             test.duration == 0
-                                ? 'Type as long as you want'
-                                : '${test.duration ~/ 60} minute${test.duration > 60 ? 's' : ''} typing test',
+                                ? 'যতক্ষণ চান টাইপ করুন'
+                                : '${test.duration ~/ 60} মিনিটের টাইপিং পরীক্ষা',
                             style: const TextStyle(
                               fontSize: 14,
                               color: Color(0xFF9ba4b4),

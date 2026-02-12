@@ -12,11 +12,8 @@ class PracticeSelectView extends GetView<PracticeSelectController> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF16213e),
         title: const Text(
-          'Select a Lesson',
-          style: TextStyle(
-            fontFamily: 'Courier New',
-            color: Color(0xFFeeeeee),
-          ),
+          'একটি পাঠ নির্বায়ন করুন',
+          style: TextStyle(fontFamily: 'Courier New', color: Color(0xFFeeeeee)),
         ),
         iconTheme: const IconThemeData(color: Color(0xFF00adb5)),
       ),

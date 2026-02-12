@@ -6,20 +6,20 @@ import 'bottom_row/bottom_row_lessons.dart';
 final allLessonCategories = [
   LessonCategory(
     id: 'home_row',
-    title: 'Home Row',
-    description: 'Learn the foundation - ASDF JKL;',
+    title: 'হোম সারি',
+    description: 'ভিত্তি শিখুন - ASDF JKL;',
     lessons: homeRowLessons,
   ),
   LessonCategory(
     id: 'top_row',
-    title: 'Top Row',
-    description: 'Master the top row - QWER UIOP',
+    title: 'উপরের সারি',
+    description: 'উপরের সারিতে দক্ষতা অর্জন করুন - QWER UIOP',
     lessons: topRowLessons,
   ),
   LessonCategory(
     id: 'bottom_row',
-    title: 'Bottom Row',
-    description: 'Complete the keyboard - ZXCV M,.',
+    title: 'নিচের সারি',
+    description: 'কীবোর্ড সম্পূর্ণ করুন - ZXCV M,.',
     lessons: bottomRowLessons,
   ),
 ];

@@ -35,28 +35,31 @@ class TestPageView extends GetView<TestPageController> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Obx(
-                    () => _buildStat('WPM', controller.wpm.toStringAsFixed(0)),
+                    () => _buildStat(
+                      'শব্দ/মিনিট',
+                      controller.wpm.toStringAsFixed(0),
+                    ),
                   ),
                   Obx(
                     () => _buildStat(
-                      'Accuracy',
+                      'নির্ভুলতা',
                       '${controller.accuracy.toStringAsFixed(1)}%',
                     ),
                   ),
                   Obx(
-                    () => _buildStat(
-                      'Errors',
-                      controller.errors.value.toString(),
-                    ),
+                    () => _buildStat('ভুল', controller.errors.value.toString()),
                   ),
                   Obx(() {
                     if (controller.test.duration == 0) {
                       return _buildStat(
-                        'Time',
-                        '${controller.elapsedTime.value}s',
+                        'সময়',
+                        '${controller.elapsedTime.value}সে',
                       );
                     } else {
-                      return _buildStat('Time', '${controller.remainingTime}s');
+                      return _buildStat(
+                        'সময়',
+                        '${controller.remainingTime}সে',
+                      );
                     }
                   }),
                 ],
@@ -82,8 +85,8 @@ class TestPageView extends GetView<TestPageController> {
                       ),
                       child: Text(
                         controller.test.duration == 0
-                            ? 'Type the text above. No time limit!'
-                            : 'Type as much as you can within the time limit!',
+                            ? 'উপরের টেক্সটটি টাইপ করুন। কোন সময় সীমা নেই!'
+                            : 'সময়সীমার মধ্যে যতটা সম্ভব টাইপ করুন!',
                         style: const TextStyle(
                           fontSize: 14,
                           color: Color(0xFF9ba4b4),

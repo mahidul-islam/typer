@@ -16,7 +16,7 @@ class HomeView extends GetView<HomeController> {
           children: [
             // Title
             const Text(
-              'TYPER',
+              'টাইপার',
               style: TextStyle(
                 fontSize: 64,
                 fontWeight: FontWeight.bold,
@@ -27,7 +27,7 @@ class HomeView extends GetView<HomeController> {
             ),
             const SizedBox(height: 16),
             const Text(
-              'Improve your typing skills',
+              'আপনার টাইপিং দক্ষতা উন্নত করুন',
               style: TextStyle(
                 fontSize: 20,
                 color: Color(0xFFeeeeee),
@@ -35,23 +35,23 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
             const SizedBox(height: 80),
-            
+
             // Practice Button
             _buildButton(
               context,
-              title: 'PRACTICE',
-              subtitle: 'Learn with structured lessons',
+              title: 'অনুশীলন',
+              subtitle: 'সুসংগঠিত পাঠের সাহায্যে শিখুন',
               icon: Icons.school,
               onTap: () => Get.toNamed('/practice-select'),
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             // Test Button
             _buildButton(
               context,
-              title: 'TEST',
-              subtitle: 'Challenge yourself with timed tests',
+              title: 'পরীক্ষা',
+              subtitle: 'সময়সীমিত পরীক্ষায় নিজেকে চ্যালেঞ্জ করুন',
               icon: Icons.timer,
               onTap: () => Get.toNamed('/test-select'),
             ),
@@ -60,7 +60,7 @@ class HomeView extends GetView<HomeController> {
       ),
     );
   }
-  
+
   Widget _buildButton(
     BuildContext context, {
     required String title,
@@ -79,10 +79,7 @@ class HomeView extends GetView<HomeController> {
         decoration: BoxDecoration(
           color: const Color(0xFF16213e),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: const Color(0xFF00adb5),
-            width: 2,
-          ),
+          border: Border.all(color: const Color(0xFF00adb5), width: 2),
           boxShadow: [
             BoxShadow(
               color: const Color(0xFF00adb5).withValues(alpha: 0.3),
@@ -93,11 +90,7 @@ class HomeView extends GetView<HomeController> {
         ),
         child: Row(
           children: [
-            Icon(
-              icon,
-              size: 48,
-              color: const Color(0xFF00adb5),
-            ),
+            Icon(icon, size: 48, color: const Color(0xFF00adb5)),
             const SizedBox(width: 24),
             Expanded(
               child: Column(

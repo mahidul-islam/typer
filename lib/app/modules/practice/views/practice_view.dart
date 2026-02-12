@@ -36,23 +36,23 @@ class PracticeView extends GetView<PracticeController> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Obx(
-                    () => _buildStat('WPM', controller.wpm.toStringAsFixed(0)),
+                    () => _buildStat(
+                      'শব্দ/মিনিট',
+                      controller.wpm.toStringAsFixed(0),
+                    ),
                   ),
                   Obx(
                     () => _buildStat(
-                      'Accuracy',
+                      'নির্ভুলতা',
                       '${controller.accuracy.toStringAsFixed(1)}%',
                     ),
                   ),
                   Obx(
-                    () => _buildStat(
-                      'Errors',
-                      controller.errors.value.toString(),
-                    ),
+                    () => _buildStat('ভুল', controller.errors.value.toString()),
                   ),
                   Obx(
                     () =>
-                        _buildStat('Time', '${controller.elapsedTime.value}s'),
+                        _buildStat('সময়', '${controller.elapsedTime.value}সে'),
                   ),
                 ],
               ),

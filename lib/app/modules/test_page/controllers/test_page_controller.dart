@@ -6,102 +6,109 @@ import '../../../data/models/typing_test.dart';
 
 class TestPageController extends GetxController {
   late TypingTest test;
-  
+
   final typedText = ''.obs;
   final currentCharIndex = 0.obs;
   final errors = 0.obs;
   final startTime = Rxn<DateTime>();
   final elapsedTime = 0.obs;
   final isCompleted = false.obs;
-  
+
   Timer? _timer;
-  
+
   double get wpm {
     if (elapsedTime.value == 0) return 0;
     final minutes = elapsedTime.value / 60;
     final words = typedText.value.split(' ').length;
     return (words / minutes).roundToDouble();
   }
-  
+
   double get accuracy {
     if (currentCharIndex.value == 0) return 100;
-    return ((currentCharIndex.value - errors.value) / currentCharIndex.value * 100)
+    return ((currentCharIndex.value - errors.value) /
+            currentCharIndex.value *
+            100)
         .clamp(0, 100);
   }
-  
+
   int get remainingTime {
     if (test.duration == 0) return 0;
     return (test.duration - elapsedTime.value).clamp(0, test.duration);
   }
-  
+
   @override
   void onInit() {
     super.onInit();
     final args = Get.arguments;
     test = args['test'];
   }
-  
+
   @override
   void onClose() {
     _timer?.cancel();
     super.onClose();
   }
-  
+
   void startTimer() {
     if (startTime.value == null) {
       startTime.value = DateTime.now();
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        elapsedTime.value = DateTime.now().difference(startTime.value!).inSeconds;
-        
+        elapsedTime.value = DateTime.now()
+            .difference(startTime.value!)
+            .inSeconds;
+
         if (test.duration > 0 && elapsedTime.value >= test.duration) {
           completeTest();
         }
       });
     }
   }
-  
+
   void handleKeyPress(RawKeyEvent event) {
     if (event is! RawKeyDownEvent) return;
     if (isCompleted.value) return;
-    
+
     startTimer();
-    
+
     if (event.logicalKey == LogicalKeyboardKey.backspace) {
       if (typedText.value.isNotEmpty) {
-        typedText.value = typedText.value.substring(0, typedText.value.length - 1);
+        typedText.value = typedText.value.substring(
+          0,
+          typedText.value.length - 1,
+        );
         if (currentCharIndex.value > 0) {
           currentCharIndex.value--;
         }
       }
       return;
     }
-    
+
     final char = event.character;
     if (char == null || char.isEmpty) return;
-    
+
     typedText.value += char;
-    
+
     if (currentCharIndex.value < test.content.length) {
       if (char != test.content[currentCharIndex.value]) {
         errors.value++;
       }
       currentCharIndex.value++;
-      
+
       if (currentCharIndex.value >= test.content.length) {
         completeTest();
       }
     }
   }
-  
+
   void completeTest() {
     isCompleted.value = true;
     _timer?.cancel();
-    
+
     Future.delayed(const Duration(milliseconds: 500), () {
       _showCompletionDialog();
     });
   }
-  
+
   void _showCompletionDialog() {
     Get.dialog(
       Dialog(
@@ -118,7 +125,7 @@ class TestPageController extends GetxController {
               ),
               const SizedBox(height: 24),
               const Text(
-                'Test Complete!',
+                'পরীক্ষা সম্পন্ন!',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -127,10 +134,10 @@ class TestPageController extends GetxController {
                 ),
               ),
               const SizedBox(height: 24),
-              _buildStat('WPM', wpm.toStringAsFixed(0)),
-              _buildStat('Accuracy', '${accuracy.toStringAsFixed(1)}%'),
-              _buildStat('Errors', errors.value.toString()),
-              _buildStat('Time', '${elapsedTime.value}s'),
+              _buildStat('শব্দ/মিনিট', wpm.toStringAsFixed(0)),
+              _buildStat('নির্ভুলতা', '${accuracy.toStringAsFixed(1)}%'),
+              _buildStat('ভুল', errors.value.toString()),
+              _buildStat('সময়', '${elapsedTime.value}সে'),
               const SizedBox(height: 32),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -149,7 +156,7 @@ class TestPageController extends GetxController {
                       resetTest();
                     },
                     child: const Text(
-                      'Retry',
+                      'পুনরায় চেষ্টা',
                       style: TextStyle(
                         fontFamily: 'Courier New',
                         color: Color(0xFFeeeeee),
@@ -169,7 +176,7 @@ class TestPageController extends GetxController {
                       Get.back();
                     },
                     child: const Text(
-                      'Back to Tests',
+                      'পরীক্ষায় ফিরুন',
                       style: TextStyle(
                         fontFamily: 'Courier New',
                         color: Color(0xFF1a1a2e),
@@ -185,7 +192,7 @@ class TestPageController extends GetxController {
       barrierDismissible: false,
     );
   }
-  
+
   Widget _buildStat(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -213,7 +220,7 @@ class TestPageController extends GetxController {
       ),
     );
   }
-  
+
   void resetTest() {
     typedText.value = '';
     currentCharIndex.value = 0;

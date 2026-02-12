@@ -1,11 +1,11 @@
 {
-    "name": "Typer - Typing Practice",
-    "short_name": "Typer",
+    "name": "টাইপার - টাইপিং অনুশীলন",
+    "short_name": "টাইপার",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#1a1a2e",
     "theme_color": "#00adb5",
-    "description": "Improve your typing skills with structured lessons and timed tests.",
+    "description": "সুসংগঠিত পাঠ এবং সময়সীমিত পরীক্ষার মাধ্যমে আপনার টাইপিং দক্ষতা উন্নত করুন।",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
