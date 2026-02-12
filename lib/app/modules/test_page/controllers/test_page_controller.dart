@@ -64,8 +64,8 @@ class TestPageController extends GetxController {
     }
   }
 
-  void handleKeyPress(RawKeyEvent event) {
-    if (event is! RawKeyDownEvent) return;
+  void handleKeyPress(KeyEvent event) {
+    if (event is! KeyDownEvent) return;
     if (isCompleted.value) return;
 
     startTimer();

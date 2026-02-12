@@ -12,16 +12,16 @@ class PracticeSelectView extends GetView<PracticeSelectController> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF16213e),
         title: const Text(
-          'একটি পাঠ নির্বায়ন করুন',
+          'একটি পাঠ নির্বাচন করুন',
           style: TextStyle(fontFamily: 'Courier New', color: Color(0xFFeeeeee)),
         ),
         iconTheme: const IconThemeData(color: Color(0xFF00adb5)),
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(24),
-        itemCount: controller.categories.length,
-        itemBuilder: (context, categoryIndex) {
-          final category = controller.categories[categoryIndex];
+        itemCount: controller.phases.length,
+        itemBuilder: (context, phaseIndex) {
+          final phase = controller.phases[phaseIndex];
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -30,20 +30,50 @@ class PracticeSelectView extends GetView<PracticeSelectController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF00adb5).withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            'পর্ব ${phaseIndex + 1}',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF00adb5),
+                              fontFamily: 'Courier New',
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          'লক্ষ্য: ${phase.targetWpm} শব্দ/মিনিট | ${phase.targetAccuracy}%',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF9ba4b4),
+                            fontFamily: 'Courier New',
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
                     Text(
-                      category.title,
+                      phase.titleBn,
                       style: const TextStyle(
-                        fontSize: 32,
+                        fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF00adb5),
                         fontFamily: 'Courier New',
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 4),
                     Text(
-                      category.description,
+                      phase.descriptionBn,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: Color(0xFF9ba4b4),
                         fontFamily: 'Courier New',
                       ),
@@ -51,11 +81,11 @@ class PracticeSelectView extends GetView<PracticeSelectController> {
                   ],
                 ),
               ),
-              ...category.lessons.map((lesson) {
+              ...phase.lessons.map((lesson) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: InkWell(
-                    onTap: () => controller.selectLesson(category, lesson),
+                    onTap: () => controller.selectLesson(phase, lesson),
                     child: Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
@@ -68,27 +98,71 @@ class PracticeSelectView extends GetView<PracticeSelectController> {
                       ),
                       child: Row(
                         children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF00adb5).withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(
+                              child: Text(
+                                '${lesson.lessonNumber}',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF00adb5),
+                                  fontFamily: 'Courier New',
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  lesson.title,
+                                  lesson.titleBn,
                                   style: const TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                     color: Color(0xFFeeeeee),
                                     fontFamily: 'Courier New',
                                   ),
                                 ),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: 4),
                                 Text(
-                                  lesson.description,
+                                  lesson.descriptionBn,
                                   style: const TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     color: Color(0xFF9ba4b4),
                                     fontFamily: 'Courier New',
                                   ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 6),
+                                Row(
+                                  children: [
+                                    Text(
+                                      '${lesson.targetWpm} শব্দ/মিনিট',
+                                      style: const TextStyle(
+                                        fontSize: 11,
+                                        color: Color(0xFF00adb5),
+                                        fontFamily: 'Courier New',
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Text(
+                                      '${lesson.targetAccuracy}% নির্ভুলতা',
+                                      style: const TextStyle(
+                                        fontSize: 11,
+                                        color: Color(0xFF00adb5),
+                                        fontFamily: 'Courier New',
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -96,7 +170,7 @@ class PracticeSelectView extends GetView<PracticeSelectController> {
                           const Icon(
                             Icons.arrow_forward_ios,
                             color: Color(0xFF00adb5),
-                            size: 20,
+                            size: 18,
                           ),
                         ],
                       ),

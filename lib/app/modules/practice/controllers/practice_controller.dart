@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../../data/models/lesson.dart';
-import '../../../data/lessons/lesson_data.dart';
+import '../../../data/lessons/all_lessons.dart';
 
 class PracticeController extends GetxController {
   late Lesson lesson;
-  late LessonCategory category;
+  late LessonPhase phase;
 
   final typedText = ''.obs;
   final currentCharIndex = 0.obs;
@@ -38,7 +38,7 @@ class PracticeController extends GetxController {
     super.onInit();
     final args = Get.arguments;
     lesson = args['lesson'];
-    category = args['category'];
+    phase = args['phase'];
   }
 
   @override
@@ -58,8 +58,8 @@ class PracticeController extends GetxController {
     }
   }
 
-  void handleKeyPress(RawKeyEvent event) {
-    if (event is! RawKeyDownEvent) return;
+  void handleKeyPress(KeyEvent event) {
+    if (event is! KeyDownEvent) return;
     if (isCompleted.value) return;
 
     startTimer();
@@ -227,34 +227,22 @@ class PracticeController extends GetxController {
   }
 
   void goToNextLesson() {
-    final currentLessonIndex = category.lessons.indexOf(lesson);
-    if (currentLessonIndex < category.lessons.length - 1) {
-      // Go to next lesson in the same category
-      final nextLesson = category.lessons[currentLessonIndex + 1];
+    final nextLesson = getNextLesson(lesson);
+    if (nextLesson != null) {
+      final nextPhase = getPhaseForLesson(nextLesson);
       Get.off(
         () => Get.currentRoute,
-        arguments: {'lesson': nextLesson, 'category': category},
+        arguments: {'lesson': nextLesson, 'phase': nextPhase},
       );
       lesson = nextLesson;
+      if (nextPhase != null) {
+        phase = nextPhase;
+      }
       resetLesson();
     } else {
-      // Find next category
-      final categoryIndex = allLessonCategories.indexOf(category);
-      if (categoryIndex < allLessonCategories.length - 1) {
-        final nextCategory = allLessonCategories[categoryIndex + 1];
-        final nextLesson = nextCategory.lessons.first;
-        Get.off(
-          () => Get.currentRoute,
-          arguments: {'lesson': nextLesson, 'category': nextCategory},
-        );
-        lesson = nextLesson;
-        category = nextCategory;
-        resetLesson();
-      } else {
-        // All lessons completed
-        Get.back();
-        Get.back();
-      }
+      // All lessons completed - go back to home
+      Get.back();
+      Get.back();
     }
   }
 }

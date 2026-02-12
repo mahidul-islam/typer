@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../controllers/test_page_controller.dart';
 
@@ -8,10 +7,10 @@ class TestPageView extends GetView<TestPageController> {
 
   @override
   Widget build(BuildContext context) {
-    return RawKeyboardListener(
+    return KeyboardListener(
       focusNode: FocusNode()..requestFocus(),
       autofocus: true,
-      onKey: controller.handleKeyPress,
+      onKeyEvent: controller.handleKeyPress,
       child: Scaffold(
         backgroundColor: const Color(0xFF1a1a2e),
         appBar: AppBar(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../controllers/practice_controller.dart';
 import '../widgets/keyboard_widget.dart';
@@ -9,19 +8,20 @@ class PracticeView extends GetView<PracticeController> {
 
   @override
   Widget build(BuildContext context) {
-    return RawKeyboardListener(
+    return KeyboardListener(
       focusNode: FocusNode()..requestFocus(),
       autofocus: true,
-      onKey: controller.handleKeyPress,
+      onKeyEvent: controller.handleKeyPress,
       child: Scaffold(
         backgroundColor: const Color(0xFF1a1a2e),
         appBar: AppBar(
           backgroundColor: const Color(0xFF16213e),
           title: Text(
-            controller.lesson.title,
+            'পাঠ ${controller.lesson.lessonNumber}: ${controller.lesson.titleBn}',
             style: const TextStyle(
               fontFamily: 'Courier New',
               color: Color(0xFFeeeeee),
+              fontSize: 16,
             ),
           ),
           iconTheme: const IconThemeData(color: Color(0xFF00adb5)),
